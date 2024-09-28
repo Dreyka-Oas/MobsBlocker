@@ -1,14 +1,15 @@
 modLoader="javafml"
 loaderVersion="[4,)"
-license="Not specified"
+license="Apache License version 2.0"
 
 [[mods]]
 modId="mobs_blocker"
-version="1.0.0"
+version="0.0.1"
 displayName="Mobs Blocker"
-displayURL="https://mcreator.net"
+displayURL="https://github.com/Dreyka-Oas/MobsBlocker.git"
+logoFile="logo.png"
 credits="Created using mod maker MCreator - https://mcreator.net/about"
-authors="dreyka-oas, MCreator"
+authors="Dreyka Oas"
 
 # Start of user code block mod configuration
 # End of user code block mod configuration

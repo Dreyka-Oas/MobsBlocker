@@ -14,16 +14,18 @@
   "workspaceSettings": {
     "modid": "mobs_blocker",
     "modName": "Mobs Blocker",
-    "version": "1.0.0",
-    "author": "dreyka-oas, MCreator",
-    "websiteURL": "https://mcreator.net",
-    "license": "Not specified",
+    "version": "0.0.1",
+    "author": "Dreyka Oas",
+    "websiteURL": "https://github.com/Dreyka-Oas/MobsBlocker.git",
+    "license": "Apache License version 2.0",
     "serverSideOnly": false,
+    "modPicture": "logo",
     "requiredMods": [],
     "dependencies": [],
     "dependants": [],
     "mcreatorDependencies": [],
     "currentGenerator": "neoforge-1.21.1",
+    "credits": "Created using mod maker MCreator - https://mcreator.net/about",
     "modElementsPackage": "oas.work.mobsblocker"
   },
   "mcreatorVersion": 202400339215
