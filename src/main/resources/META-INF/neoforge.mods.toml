@@ -8,8 +8,9 @@ version="0.0.1"
 displayName="Mobs Blocker"
 displayURL="https://github.com/Dreyka-Oas/MobsBlocker.git"
 logoFile="logo.png"
-credits="Created using mod maker MCreator - https://mcreator.net/about"
+credits="Mod development and implementation of technical features."
 authors="Dreyka Oas"
+description="Mob spawn blocker"
 
 # Start of user code block mod configuration
 # End of user code block mod configuration
