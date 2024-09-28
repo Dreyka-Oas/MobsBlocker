@@ -1,5 +1,52 @@
 {
-  "mod_elements": [],
+  "mod_elements": [
+    {
+      "name": "CreateFile",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": true,
+      "registry_name": "create_file",
+      "metadata": {
+        "files": [
+          "src/main/java/oas/work/mobsblocker/procedures/CreateFileProcedure.java"
+        ],
+        "dependencies": []
+      },
+      "path": "~/CreateFolder"
+    },
+    {
+      "name": "CreateFolder",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": true,
+      "registry_name": "create_folder",
+      "metadata": {
+        "files": [
+          "src/main/java/oas/work/mobsblocker/procedures/CreateFolderProcedure.java"
+        ],
+        "dependencies": []
+      },
+      "path": "~/CreateFolder"
+    },
+    {
+      "name": "StopMob",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": true,
+      "registry_name": "stop_mob",
+      "metadata": {
+        "files": [
+          "src/main/java/oas/work/mobsblocker/procedures/StopMobProcedure.java"
+        ],
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ]
+      }
+    }
+  ],
   "variable_elements": [],
   "sound_elements": [],
   "tag_elements": {},
@@ -9,7 +56,12 @@
   },
   "foldersRoot": {
     "name": "~",
-    "children": []
+    "children": [
+      {
+        "name": "CreateFolder",
+        "children": []
+      }
+    ]
   },
   "workspaceSettings": {
     "modid": "mobs_blocker",
