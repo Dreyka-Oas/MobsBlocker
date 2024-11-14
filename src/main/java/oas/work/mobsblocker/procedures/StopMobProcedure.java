@@ -31,10 +31,8 @@ public class StopMobProcedure {
         if (entity == null)
             return;
 
-        // Obtenir le nom de l'entité (ex : minecraft:sheep)
         String entityName = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).toString();
 
-        // Obtenir le fichier 'mobs.oas' dans le dossier config/oas_work
         File configFile = new File(Paths.get("config", "oas_work", "mobs.oas").toString());
 
         // Vérifier si le fichier existe avant d'essayer de le lire
