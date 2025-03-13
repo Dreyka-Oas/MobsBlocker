@@ -66,11 +66,7 @@
   "workspaceSettings": {
     "modid": "mobs_blocker",
     "modName": "Mobs Blocker",
-<<<<<<< Updated upstream
     "version": "1.0.4",
-=======
-    "version": "1.0.9",
->>>>>>> Stashed changes
     "description": "Mob spawn blocker",
     "author": "Dreyka Oas",
     "websiteURL": "https://github.com/Dreyka-Oas/MobsBlocker.git",
@@ -82,15 +78,8 @@
     "dependants": [],
     "mcreatorDependencies": [],
     "currentGenerator": "neoforge-1.21.1",
-<<<<<<< Updated upstream
     "credits": "Mod development and implementation of technical features.",
     "modElementsPackage": "oas.work.mobsblocker"
   },
-  "mcreatorVersion": 202400445618
-=======
-    "credits": "O.A.S",
-    "modElementsPackage": "oas.work.mobs_blocker"
-  },
   "mcreatorVersion": 202500110519
->>>>>>> Stashed changes
 }
