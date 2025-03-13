@@ -4,11 +4,15 @@ license="Apache License version 2.0"
 
 [[mods]]
 modId="mobs_blocker"
+<<<<<<< Updated upstream
 version="1.0.4"
+=======
+version="1.0.9"
+>>>>>>> Stashed changes
 displayName="Mobs Blocker"
 displayURL="https://github.com/Dreyka-Oas/MobsBlocker.git"
 logoFile="logo.png"
-credits="Mod development and implementation of technical features."
+credits="O.A.S"
 authors="Dreyka Oas"
 description="Mob spawn blocker"
 
@@ -18,7 +22,11 @@ description="Mob spawn blocker"
 [[dependencies.mobs_blocker]]
     modId="neoforge"
     type="required"
+<<<<<<< Updated upstream
     versionRange="[21.1.65,)"
+=======
+    versionRange="[21.1.92,)"
+>>>>>>> Stashed changes
     ordering="AFTER"
     side="BOTH"
 
