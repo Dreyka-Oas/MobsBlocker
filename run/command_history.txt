@@ -1,6 +1,0 @@
-/summon minecraft:sheep
-/summon minecraft:creeper
-/
-/summon minecraft:enderman
-/summon minecraft:creeper
-/summon minecraft:sheep
