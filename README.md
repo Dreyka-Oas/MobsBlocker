@@ -1,67 +1,35 @@
-# Block Specific Mobs from Spawning 🚫
+STOP to Unwanted Spawns! 🛑
 
-Take control of creature spawns in your Minecraft world! This simple and effective mod lets you block specific mob spawns using an easy-to-edit configuration file. Say goodbye to unwanted creatures!
+This server mod allows you to **block the spawning** of specific **mobs** in your Minecraft world! Tired of creepers exploding everywhere or hordes of sheep invading your base? This mod is for you! 🐑💥
 
-***
+**⚙️ How does it work?**
 
-<details>
-  <summary>⚙️ Easy Configuration</summary>
+"Mobs Blocker" is a **server-side** mod that works **in the background** to control mob spawns. Here are the key steps:
 
-## ⚙️ Easy Configuration
+1. **📝 Configuration:** When the server starts for the first time with the mod, a configuration file named `mobs.oas` is created in the `config/oas_work/` folder.
+2. **📖 Reading the configuration file:** The mod reads this `mobs.oas` file which contains a **list of mobs to block**. Each mob to block must be added on a **new line** in this file, using its **full Minecraft identifier** (e.g., `minecraft:creeper`, `minecraft:sheep`).
+3. **🛑 Blocking Spawns:** When Minecraft tries to spawn a mob, the mod **checks if its identifier is present in the list** in the `mobs.oas` file.
+4. **⛔ Spawn Canceled:** If the mob is on the list, its **spawn is canceled**, and it will not appear in the world. Other mobs continue to spawn normally.
 
-**Quick steps to block mobs:**
+**🎮 How to use it?**
 
-1.  **`mobs.oas` File:** Automatically created in `config/oas_work/` on first launch.
-2.  **Mob List:** Edit `mobs.oas` and add full Minecraft entity names (one per line, e.g., `minecraft:sheep`).
-3.  **Blocking Active:** The mod reads the file and prevents listed mobs from spawning.
-4.  **Full Compatibility:** Works with all mods adding new creatures.
+"Mobs Blocker" is designed to be **easy to configure**.
 
----
+1. **🛠️ Configuration:**
+    * **📂 Locate the configuration file:** Go to the `config/oas_work/` folder of your server. Open the `mobs.oas` file with a text editor.
+    * **✏️ Modify the list:** **Add** the **Minecraft identifiers of the mobs** you want to block on each line. You can **delete** lines to allow certain mobs to spawn again. For example, to block creepers and sheep, the `mobs.oas` file should look like this:
+       ```
+       minecraft:sheep
+       minecraft:creeper
+       ```
+    * **💾 Save** the `mobs.oas` file.
+    * 🔄 **Changes are applied instantly, no server restart needed!**
 
-### 📂 Accessing the Configuration File
+**📌 Important Points:**
 
-The `mobs.oas` file is generated here: `config/oas_work/mobs.oas`. If it doesn't exist, it will be created on the first game launch.
-
----
-
-### ✏️ Content of the `mobs.oas` File
-
-The file contains a list of full Minecraft entity names. **Example:**
-Use code with caution.
-minecraft:sheep
-minecraft:creeper
-minecraft:zombie
-
-Simply add the entities you want to block, one per line.
-
----
-
-### 🚫 Blocking Entities
-
-The mod reads each line in `mobs.oas`. If an entity matches a listed name, its spawn is **automatically canceled ❌**.
-
----
-
-### 🧩 Mod Compatibility
-
-This mod is **fully compatible** with other mods that add entities. You can block both vanilla and modded mobs by using their full entity names (e.g., `modname:custom_entity`).
-
-</details>
-
-***
-
-<details>
-  <summary>🛠️ Simple Usage</summary>
-
-## 🛠️ Simple Usage
-
-1.  **Edit `mobs.oas`:** Add the names of entities to block.
-2.  **Launch Minecraft:** Or restart your server. Listed mobs will no longer spawn.
-
-</details>
-
-***
-
-## 🌟 Note
-
-**Note:** Compatible with all mods adding entities, to easily block both vanilla and modded mobs!
+* 💻 **Server-Side ONLY:** This mod is **server-side only**. It must be installed **on the server** and not on players' games.
+* ⚙️ **File-Based Configuration:** The list of blocked mobs is **directly editable** in the `mobs.oas` file, without complex commands.
+* 📍 **Configuration File:** The `mobs.oas` file is located in the `config/oas_work/` folder of your server.
+* 📝 **Minecraft Identifiers:** Use the **full Minecraft identifiers** of mobs (e.g., `minecraft:zombie`, `minecraft:pig`). You can find identifiers on sites like the Minecraft Wiki.
+* 🤝 **Broad Compatibility:** This mod is **compatible with most other Minecraft mods**, ensuring easy integration into your existing server setup.
+* ⚡ **Immediate Effect:** Modifications to the `mobs.oas` file are applied **instantly**, without requiring a server restart.
