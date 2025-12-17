@@ -1,7 +1,7 @@
 <div align="center">
 
 # Mobs Blocker
-### Contrôlez les apparitions de créatures sur votre serveur
+### Control Mob Spawning on Your Server
 
 [![NeoForge](https://img.shields.io/badge/NeoForge-1.20.1+-orange?style=for-the-badge)](https://neoforged.net/)
 [![CurseForge](https://img.shields.io/badge/CurseForge-Download-orange?style=for-the-badge&logo=curseforge)](https://www.curseforge.com/minecraft/mc-mods/mobblocker)
@@ -9,68 +9,68 @@
 [![GitHub](https://img.shields.io/badge/GitHub-Source-black?style=for-the-badge&logo=github)](https://github.com/Dreyka-Oas/Mobs-Blocker)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-**Mobs Blocker** est un outil d'administration simple et efficace pour empêcher l'apparition (spawn) de n'importe quelle créature (mob) sur votre serveur via une simple commande. Gardez le contrôle de votre monde sans redémarrage ni configuration complexe.
+**Mobs Blocker** is a simple and effective admin tool to prevent any mob from spawning on your server via a simple command. Keep control of your world without restarts or complex configuration.
 
-[Signaler un bug ou suggérer une fonctionnalité](https://github.com/Dreyka-Oas/Mobs-Blocker/issues)
+[Report a Bug or Suggest a Feature](https://github.com/Dreyka-Oas/Mobs-Blocker/issues)
 
 </div>
 
 ---
 
-## Comment ça marche
+## How It Works
 
-**Mobs Blocker** fournit un mécanisme de liste noire (blacklist) en temps réel. En utilisant la commande `/spawnblocker`, vous pouvez ajouter ou retirer n'importe quelle créature du jeu.
+**Mobs Blocker** provides a real-time blacklisting mechanism. Using the `/spawnblocker` command, you can add or remove any mob from the game.
 
-Le mod intercepte chaque tentative d'apparition d'entité sur le serveur. Si l'identifiant de l'entité correspond à un élément de la liste noire, l'événement est simplement annulé. La créature n'apparaît jamais, sans aucun impact sur les performances du serveur.
-
----
-
-## Fonctionnalités Principales
-
-- **Blocage Instantané**: Ajoutez ou retirez des créatures de la liste noire et les changements sont appliqués immédiatement, sans redémarrage.
-- **Commandes Simples**: Une interface de commande intuitive (`add`, `remove`, `list`) facile à maîtriser.
-- **Auto-complétion Intégrée**: Suggère automatiquement les identifiants des créatures pour éviter les erreurs de frappe.
-- **Haute Performance**: Utilise une structure de données optimisée (`HashSet`) pour une vérification quasi-instantanée, garantissant zéro lag.
-- **Léger et Côté Serveur**: Aucune installation requise pour les joueurs.
+The mod intercepts every entity spawn attempt on the server. If the entity's ID matches an item on the blacklist, the event is simply canceled. The mob never appears, with zero impact on server performance.
 
 ---
 
-## Guide des Commandes
+## Core Features
 
-Toutes les commandes nécessitent un niveau de permission d'opérateur (niveau 4).
+- **Instant Blocking**: Add or remove mobs from the blacklist with immediate effect—no restart required.
+- **Simple Commands**: An intuitive command interface (`add`, `remove`, `list`) that is easy to master.
+- **Built-in Autocomplete**: Automatically suggests mob IDs to prevent typos.
+- **High Performance**: Uses an optimized data structure (`HashSet`) for near-instant checks, ensuring zero lag.
+- **Lightweight & Server-Side**: No installation required for players.
 
-### Ajouter une créature à la liste noire
+---
 
-Pour bloquer l'apparition des Creepers :
+## Command Guide
+
+All commands require operator permission level 4.
+
+### Add a Mob to the Blacklist
+
+To block Creepers from spawning:
 ```mcfunction
 /spawnblocker add minecraft:creeper
 ```
 
-### Retirer une créature de la liste noire
+### Remove a Mob from the Blacklist
 
-Pour autoriser à nouveau l'apparition des Creepers :
+To allow Creepers to spawn again:
 ```mcfunction
 /spawnblocker remove minecraft:creeper
 ```
 
-### Afficher la liste des créatures bloquées
+### List Blacklisted Mobs
 
-Pour voir toutes les créatures actuellement dans la liste noire :
+To see all currently blacklisted mobs:
 ```mcfunction
 /spawnblocker list
 ```
 
 ---
 
-## Détails Techniques
+## Technical Details
 
-- **Côté Serveur Uniquement**: Le mod s'installe uniquement sur le serveur.
-- **Gestion d'Événements**: Le système se base sur l'événement `EntityJoinLevelEvent` de NeoForge pour intercepter les apparitions.
-- **Stockage en Mémoire**: La liste des créatures bloquées est conservée en mémoire vive. **Attention : cette liste sera réinitialisée à chaque redémarrage du serveur.**
+- **Server-Side Only**: The mod is only installed on the server.
+- **Event-Driven**: The system hooks into NeoForge's `EntityJoinLevelEvent` to intercept spawns.
+- **In-Memory Storage**: The blacklist is stored in RAM. **Warning: this list will be reset every time the server restarts.**
 
 ---
 
 <div align="center">
   <br>
-  <p>Un outil simple pour un contrôle total.</p>
+  <p>A simple tool for total control.</p>
 </div>
