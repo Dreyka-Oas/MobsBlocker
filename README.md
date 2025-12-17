@@ -4,7 +4,8 @@
 ### Contrôlez les apparitions de créatures sur votre serveur
 
 [![NeoForge](https://img.shields.io/badge/NeoForge-1.20.1+-orange?style=for-the-badge)](https://neoforged.net/)
-[![CurseForge](https://img.shields.io/badge/CurseForge-Download-orange?style=for-the-badge&logo=curseforge)](https://www.curseforge.com/minecraft/mc-mods/mobs-blocker)
+[![CurseForge](https://img.shields.io/badge/CurseForge-Download-orange?style=for-the-badge&logo=curseforge)](https://www.curseforge.com/minecraft/mc-mods/mobblocker)
+[![Modrinth](https://img.shields.io/badge/Modrinth-Download-blue?style=for-the-badge&logo=modrinth)](https://modrinth.com/mod/mobsblocker)
 [![GitHub](https://img.shields.io/badge/GitHub-Source-black?style=for-the-badge&logo=github)](https://github.com/Dreyka-Oas/MobsBlocker)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
