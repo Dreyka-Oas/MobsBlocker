@@ -6,6 +6,8 @@
 [![NeoForge](https://img.shields.io/badge/NeoForge-1.20.1+-orange?style=for-the-badge)](https://neoforged.net/)
 [![GitHub](https://img.shields.io/badge/GitHub-Source-black?style=for-the-badge&logo=github)](https://github.com/Dreyka-Oas/Mobs-Blocker)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](https://opensource.org/licenses/MIT)
+[![Modrinth](https://img.shields.io/badge/Modrinth-Download-100000?style=for-the-badge&logo=modrinth)](https://modrinth.com/mod/mobsblocker)
+[![CurseForge](https://img.shields.io/badge/CurseForge-Download-orange?style=for-the-badge&logo=curseforge)](https://www.curseforge.com/minecraft/mc-mods/mobblocker)
 
 **Mobs Blocker** is a simple and effective admin tool to prevent any mob from spawning on your server via a simple command. Keep control of your world without restarts or complex configuration.
 
@@ -23,7 +25,7 @@ The mod intercepts every entity spawn attempt on the server. If the entity's ID 
 
 ---
 
-## Core Features
+<h2>Core Features</h2>
 
 - **Instant Blocking**: Add or remove mobs from the blacklist with immediate effect—no restart required.
 - **Simple Commands**: An intuitive command interface (`add`, `remove`, `list`) that is easy to master.
@@ -33,25 +35,25 @@ The mod intercepts every entity spawn attempt on the server. If the entity's ID 
 
 ---
 
-## Command Guide
+<h2>Command Guide</h2>
 
 All commands require operator permission level 4.
 
-### Add a Mob to the Blacklist
+<h3>Add a Mob to the Blacklist</h3>
 
 To block Creepers from spawning:
 ```mcfunction
 /spawnblocker add minecraft:creeper
 ```
 
-### Remove a Mob from the Blacklist
+<h3>Remove a Mob from the Blacklist</h3>
 
 To allow Creepers to spawn again:
 ```mcfunction
 /spawnblocker remove minecraft:creeper
 ```
 
-### List Blacklisted Mobs
+<h3>List Blacklisted Mobs</h3>
 
 To see all currently blacklisted mobs:
 ```mcfunction
@@ -60,21 +62,21 @@ To see all currently blacklisted mobs:
 
 ---
 
-## Technical Details
+<h2>Technical Details</h2>
 
 - **Server-Side Only**: The mod is only installed on the server.
 - **Event-Driven**: The system hooks into NeoForge's `EntityJoinLevelEvent` to intercept spawns.
 - **Persistent Storage**: The blacklist is stored in a JSON file (`config/spawnblocker.json`) and persists across server restarts. The list is loaded on startup and saved after each modification.
 
-## Manual Configuration
+<h2>Manual Configuration</h2>
 
 You can manually configure the blacklist by editing the `spawnblocker.json` file located in your server's `config` directory. This file contains a JSON array of mob IDs (as strings) that should be blocked from spawning.
 
-### File Location
+<h3>File Location</h3>
 - **Path**: `config/spawnblocker.json`
 - **Format**: JSON array of strings, e.g., `["minecraft:creeper", "minecraft:zombie"]`
 
-### Example Configuration
+<h3>Example Configuration</h3>
 ```json
 [
   "minecraft:creeper",
@@ -83,7 +85,7 @@ You can manually configure the blacklist by editing the `spawnblocker.json` file
 ]
 ```
 
-### Steps to Configure
+<h3>Steps to Configure</h3>
 1. **Stop the Server**: Ensure the Minecraft server is stopped before editing the file to avoid conflicts.
 2. **Edit the File**: Open `config/spawnblocker.json` with a text editor. Add or remove mob IDs in the array format. Use valid entity IDs from Minecraft (e.g., `minecraft:creeper`).
 3. **Save and Restart**: Save the file and restart the server. The changes will be loaded automatically.
