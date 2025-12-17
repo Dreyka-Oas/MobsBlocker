@@ -6,8 +6,8 @@
 [![NeoForge](https://img.shields.io/badge/NeoForge-1.20.1+-orange?style=for-the-badge)](https://neoforged.net/)
 [![GitHub](https://img.shields.io/badge/GitHub-Source-black?style=for-the-badge&logo=github)](https://github.com/Dreyka-Oas/Mobs-Blocker)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](https://opensource.org/licenses/MIT)
-[![Modrinth](https://img.shields.io/badge/Modrinth-Download-100000?style=for-the-badge&logo=modrinth)](https://modrinth.com/mod/mobs-blocker)
-[![CurseForge](https://img.shields.io/badge/CurseForge-Download-orange?style=for-the-badge&logo=curseforge)](https://www.curseforge.com/minecraft/mc-mods/mobs-blocker)
+[![Modrinth](https://img.shields.io/badge/Modrinth-Download-100000?style=for-the-badge&logo=modrinth)](https://modrinth.com/mod/mobsblocker)
+[![CurseForge](https://img.shields.io/badge/CurseForge-Download-orange?style=for-the-badge&logo=curseforge)](https://www.curseforge.com/minecraft/mc-mods/mobsblocker)
 
 **Mobs Blocker** is a simple and effective admin tool to prevent any mob from spawning on your server via a simple command. Keep control of your world without restarts or complex configuration.
 
