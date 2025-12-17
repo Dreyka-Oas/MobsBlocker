@@ -1,0 +1,61 @@
+[17Dec2025 15:38:12.393] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, neoforgeserverdev, --fml.fmlVersion, 9.0.16, --fml.mcVersion, 1.21.8, --fml.neoForgeVersion, 21.8.31, --fml.neoFormVersion, 20250717.133445]
+[17Dec2025 15:38:12.396] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: JVM identified as Eclipse Adoptium OpenJDK 64-Bit Server VM 21.0.8+9-LTS
+[17Dec2025 15:38:12.396] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 9.0 starting: java version 21.0.8 by Eclipse Adoptium; OS Windows 11 arch amd64 version 10.0
+[17Dec2025 15:38:12.555] [main/INFO] [net.neoforged.fml.loading.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because launch target is neoforgeserverdev
+[17Dec2025 15:38:12.621] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, neoforgeclientdev, --version, 21.8.31, --assetIndex, 26, --assetsDir, C:\\Users\\perso\\.mcreator\\gradle\\caches\\neoformruntime\\assets, --fml.fmlVersion, 9.0.16, --fml.mcVersion, 1.21.8, --fml.neoFo[17Dec2025 15:38:13.208] [main/INFO] [net.neoforged.fml.loading.moddiscovery.locators.JarInJarDependencyLocator/]: Found 2 dependencies adding them to mods collection
+[17Dec2025 15:38:13.212] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: 
+     Mod List:
+		Name Version (Mod Id)
+
+		Minecraft 1.21.8 (minecraft)
+		Mobs Blocker 1.1.0 (mobs_blocker)
+		NeoForge 21.8.31 (neoforge)
+[17Dec2025 15:38:14.702] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'neoforgeserverdev' with arguments []
+[17Dec2025 15:38:16.781] [main/INFO] [MixinExtras|Service/]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.0).
+[17Dec2025 15:38:23.334] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[17Dec2025 15:38:23.336] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
+[17Dec2025 15:38:23.339] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[17Dec2025 15:38:23.341] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[17Dec2025 15:38:23.342] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[17Dec2025 15:38:23.344] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [waypoint, modify, waypoint, color, reset] and [waypoint, modify, waypoint, color, color] with inputs: [reset]
+[17Dec2025 15:38:23.426] [modloading-worker-0/INFO] [net.neoforged.neoforge.common.NeoForgeMod/NEOFORGE-MOD]: NeoForge mod loading, version 2[17Dec2025 15:38:23.531[17Dec2025 15:38:23.902] [main/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[17Dec2025 15:38:24.053] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/O:/Minecraft/Mods/Mobs%20Blocker/1.21.8/build/moddev/artifacts/neoforge-21.8.31.jar%23146!/assets/.mcassetsroot' uses unexpected schema
+[17Dec2025 15:38:24.054] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/O:/Minecraft/Mods/Mobs%20Blocker/1.21.8/build/moddev/artifacts/neoforge-21.8.31.jar%23146!/data/.mcassetsroot' uses unexpected schema
+[17Dec2025 15:38:25.915] [main/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 1407 recipes
+[17Dec2025 15:38:25.936] [main/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 1520 advancements
+[17Dec2025 15:38:25.940] [main/INFO] [net.neoforged.neoforge.common.crafting.RecipePriorityManager/]: Loaded 0 recipe priority overrides
+[17Dec2025 15:38:26.678] [Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Starting minecraft server version 1.21.8
+[17Dec2025 15:38:26.678] [Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Loading properties
+[17Dec2025 15:38:26.678] [Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Default game type: CREATIVE
+[17Dec2025 15:38:26.678] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[17Dec2025 15:38:26.727] [Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Starting Minecraft server on *:25463
+[17Dec2025 15:38:26.851] [Server thread/INFO] [net.minecraft.server.network.ServerConnectionListener/]: Using default channel type
+[17Dec2025 15:38:26.898] [Server thread/WARN] [net.minecraft.server.dedicated.DedicatedServer/]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[17Dec2025 15:38:26.898] [Server thread/WARN] [net.minecraft.server.dedicated.DedicatedServer/]: The server will make no attempt to authenticate usernames. Beware.
+[17Dec2025 15:38:26.898] [Server thread/WARN] [net.minecraft.server.dedicated.DedicatedServer/]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[17Dec2025 15:38:26.898] [Server thread/WARN] [net.minecraft.server.dedicated.DedicatedServer/]: To change this, set "online-mode" to "true" in the server.properties file.
+[17Dec2025 15:38:26.948] [Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Preparing level "world"
+[17Dec2025 15:38:27.336] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[17Dec2025 15:38:27.856] [worldgen/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[17Dec2025 15:38:27.857] [worldgen/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[17Dec2025 15:38:28.070] [Server thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 734 ms
+[17Dec2025 15:38:28.071] [Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Done (1.151s)! For help, type "help"
+[17Dec2025 15:38:28.104] [Server thread/INFO] [net.neoforged.neoforge.server.permission.PermissionAPI/]: Successfully initialized permission handler neoforge:default_handler
+[17Dec2025 15:39:03.041] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: DreykaOas[/[fe80::5dee:1afc:911f:fec7%3]:56086] logged in with entity id 59 at (45.69999998807907, 73.0, 188.9944243405666)
+[17Dec2025 15:39:03.121] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: DreykaOas joined the game
+[17Dec2025 15:39:24.310] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: DreykaOas lost connection: Disconnected
+[17Dec2025 15:39:24.311] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: DreykaOas left the game
+[17Dec2025 15:39:29.457] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping the server
+[17Dec2025 15:39:29.507] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[17Dec2025 15:39:29.508] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[17Dec2025 15:39:29.508] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[17Dec2025 15:39:29.625] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[17Dec2025 15:39:29.666] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[17Dec2025 15:39:29.671] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[17Dec2025 15:39:29.683] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[17Dec2025 15:39:29.683] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[17Dec2025 15:39:29.683] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[17Dec2025 15:39:29.683] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
+tlas/]: Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
+[17Dec2025 15:38:27.024] [Render thread/INFO] [net.neoforged.neoforge.client.entity.animation.json.AnimationLoader/]: Loaded 0 entity animations
+[17Dec2025 15:38:28.313] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!

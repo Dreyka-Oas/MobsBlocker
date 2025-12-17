@@ -1,0 +1,8 @@
+{
+  "cmd.spawnblocker.add.success": "§aAjouté avec succès : §e%s§a à la liste de blocage.",
+  "cmd.spawnblocker.remove.success": "§aRetiré avec succès : §e%s§a de la liste de blocage.",
+  "cmd.spawnblocker.error.exists": "§cCe mob est déjà bloqué : §e%s",
+  "cmd.spawnblocker.error.not_found": "§cCe mob n\u0027est pas dans la liste : §e%s",
+  "cmd.spawnblocker.list.header": "§6Mobs Bloqués : §f%s",
+  "cmd.spawnblocker.list.empty": "§6La liste de blocage est vide."
+}
