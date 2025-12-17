@@ -6,12 +6,12 @@
 [![NeoForge](https://img.shields.io/badge/NeoForge-1.20.1+-orange?style=for-the-badge)](https://neoforged.net/)
 [![CurseForge](https://img.shields.io/badge/CurseForge-Download-orange?style=for-the-badge&logo=curseforge)](https://www.curseforge.com/minecraft/mc-mods/mobblocker)
 [![Modrinth](https://img.shields.io/badge/Modrinth-Download-blue?style=for-the-badge&logo=modrinth)](https://modrinth.com/mod/mobsblocker)
-[![GitHub](https://img.shields.io/badge/GitHub-Source-black?style=for-the-badge&logo=github)](https://github.com/Dreyka-Oas/MobsBlocker)
+[![GitHub](https://img.shields.io/badge/GitHub-Source-black?style=for-the-badge&logo=github)](https://github.com/Dreyka-Oas/Mobs-Blocker)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
 **Mobs Blocker** est un outil d'administration simple et efficace pour empêcher l'apparition (spawn) de n'importe quelle créature (mob) sur votre serveur via une simple commande. Gardez le contrôle de votre monde sans redémarrage ni configuration complexe.
 
-[Signaler un bug ou suggérer une fonctionnalité](https://github.com/Dreyka-Oas/MobsBlocker/issues)
+[Signaler un bug ou suggérer une fonctionnalité](https://github.com/Dreyka-Oas/Mobs-Blocker/issues)
 
 </div>
 
