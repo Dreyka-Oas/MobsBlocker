@@ -1,0 +1,68 @@
+{
+  "mod_elements": [
+    {
+      "name": "SpawnBlocker",
+      "type": "command",
+      "compiles": true,
+      "locked_code": true,
+      "registry_name": "spawn_blocker",
+      "metadata": {
+        "files": [
+          "src/main/java/oas/work/mobs_blocker/command/SpawnBlockerCommand.java"
+        ]
+      }
+    }
+  ],
+  "variable_elements": [],
+  "sound_elements": [],
+  "tag_elements": {},
+  "tab_element_order": {},
+  "language_map": {
+    "en_us": {
+      "cmd.spawnblocker.add.success": "§aSuccessfully added §e%s§a to the block list.",
+      "cmd.spawnblocker.remove.success": "§aSuccessfully removed §e%s§a from the block list.",
+      "cmd.spawnblocker.error.exists": "§cThis mob is already blocked: §e%s",
+      "cmd.spawnblocker.error.not_found": "§cThis mob is not in the block list: §e%s",
+      "cmd.spawnblocker.list.header": "§6Blocked Mobs: §f%s",
+      "cmd.spawnblocker.list.empty": "§6The block list is currently empty."
+    },
+    "fr_fr": {
+      "cmd.spawnblocker.add.success": "§aAjouté avec succès : §e%s§a à la liste de blocage.",
+      "cmd.spawnblocker.remove.success": "§aRetiré avec succès : §e%s§a de la liste de blocage.",
+      "cmd.spawnblocker.error.exists": "§cCe mob est déjà bloqué : §e%s",
+      "cmd.spawnblocker.error.not_found": "§cCe mob n\u0027est pas dans la liste : §e%s",
+      "cmd.spawnblocker.list.header": "§6Mobs Bloqués : §f%s",
+      "cmd.spawnblocker.list.empty": "§6La liste de blocage est vide."
+    }
+  },
+  "metadata": {
+    "files": [
+      "src/main/java/oas/work/mobs_blocker/MobsBlockerMod.java",
+      "src/main/resources/pack.mcmeta",
+      "src/main/resources/META-INF/neoforge.mods.toml"
+    ]
+  },
+  "foldersRoot": {
+    "name": "~",
+    "children": []
+  },
+  "workspaceSettings": {
+    "modid": "mobs_blocker",
+    "modName": "Mobs Blocker",
+    "version": "1.1.0",
+    "description": "A simple tool to block any mob from spawning on your server. ",
+    "author": "Dreyka Oas",
+    "websiteURL": "https://modrinth.com/mod/mobsblocker",
+    "license": "MIT License",
+    "serverSideOnly": true,
+    "modPicture": "logo",
+    "requiredMods": [],
+    "dependencies": [],
+    "dependants": [],
+    "mcreatorDependencies": [],
+    "currentGenerator": "neoforge-1.21.1",
+    "credits": "Made with MCreaHub Optimized for high-performance servers.",
+    "modElementsPackage": "oas.work.mobs_blocker"
+  },
+  "mcreatorVersion": 202500345720
+}
