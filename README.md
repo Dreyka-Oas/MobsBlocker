@@ -72,5 +72,5 @@ To see all currently blacklisted mobs:
 
 <div align="center">
   <br>
-  <p>A simple tool for total control.</p>
+  <p>A huge thank you to <strong><a href="https://mcreahub.pages.dev/">MCreaHub</a></strong> for facilitating the initial project setup. The mod has since been completely re-architected for exceptional performance.</p>
 </div>
