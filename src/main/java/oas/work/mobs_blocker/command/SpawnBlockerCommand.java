@@ -1,9 +1,14 @@
 package oas.work.mobs_blocker.command;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.loading.FMLPaths;
 
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.CommandSourceStack;
@@ -14,34 +19,63 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
 
 @EventBusSubscriber
 public class SpawnBlockerCommand {
 
+    // --- SAUVEGARDE (PERSISTANCE) ---
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final Path CONFIG_PATH = FMLPaths.CONFIGDIR.get().resolve("spawnblocker.json");
     public static final Set<String> BANNED_MOBS = new HashSet<>();
-    
-    // --- SYSTÈME DE TRADUCTION INTERNE ---
+
+    // Charge la config au démarrage (appelé plus bas)
+    private static void loadConfig() {
+        if (!Files.exists(CONFIG_PATH)) return;
+        
+        try (Reader reader = Files.newBufferedReader(CONFIG_PATH)) {
+            Set<String> loaded = GSON.fromJson(reader, new TypeToken<HashSet<String>>(){}.getType());
+            if (loaded != null) {
+                BANNED_MOBS.clear();
+                BANNED_MOBS.addAll(loaded);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Sauvegarde la config après chaque modification
+    private static void saveConfig() {
+        try (Writer writer = Files.newBufferedWriter(CONFIG_PATH)) {
+            GSON.toJson(BANNED_MOBS, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // --- TRADUCTION (SANS MOD CLIENT) ---
     private static final Map<String, Map<String, String>> LANG_MAP = new HashMap<>();
 
     static {
-        // Dictionnaire ANGLAIS (Défaut)
+        // Anglais
         Map<String, String> en = new HashMap<>();
-        en.put("add.success", "§aSuccessfully added §e%s§a to the block list.");
-        en.put("remove.success", "§aSuccessfully removed §e%s§a from the block list.");
+        en.put("add.success", "§aSuccessfully added §e%s§a to the block list (Saved).");
+        en.put("remove.success", "§aSuccessfully removed §e%s§a from the block list (Saved).");
         en.put("error.exists", "§cError: The mob §e%s§c is already blocked.");
         en.put("error.not_found", "§cError: The mob §e%s§c is not in the list.");
         en.put("list.header", "§6Blocked Mobs: §f%s");
         en.put("list.empty", "§6The blocked mobs list is empty.");
         LANG_MAP.put("en_us", en);
 
-        // Dictionnaire FRANÇAIS
+        // Français
         Map<String, String> fr = new HashMap<>();
-        fr.put("add.success", "§aAjouté avec succès : §e%s§a à la liste de blocage.");
-        fr.put("remove.success", "§aRetiré avec succès : §e%s§a de la liste de blocage.");
+        fr.put("add.success", "§aAjouté avec succès : §e%s§a à la liste (Sauvegardé).");
+        fr.put("remove.success", "§aRetiré avec succès : §e%s§a de la liste (Sauvegardé).");
         fr.put("error.exists", "§cErreur : Le mob §e%s§c est déjà bloqué.");
         fr.put("error.not_found", "§cErreur : Le mob §e%s§c n'est pas dans la liste.");
         fr.put("list.header", "§6Mobs Bloqués : §f%s");
@@ -49,34 +83,27 @@ public class SpawnBlockerCommand {
         LANG_MAP.put("fr_fr", fr);
     }
 
-    // Fonction qui choisit la bonne langue selon le joueur
     private static Component getMsg(CommandSourceStack source, String key, Object... args) {
-        String lang = "en_us"; // Langue par défaut
-        
+        String lang = "en_us";
         if (source.getEntity() instanceof ServerPlayer player) {
-            // Récupère la langue du client (ex: "fr_fr")
             lang = player.clientInformation().language();
         }
-
-        // Si la langue du joueur n'est pas dans notre liste, on prend l'anglais
-        Map<String, String> dictionary = LANG_MAP.getOrDefault(lang, LANG_MAP.get("en_us"));
-        
-        // On récupère le texte et on remplit les %s
-        String text = dictionary.getOrDefault(key, key);
-        try {
-            return Component.literal(String.format(text, args));
-        } catch (Exception e) {
-            return Component.literal(text);
-        }
+        Map<String, String> dict = LANG_MAP.getOrDefault(lang, LANG_MAP.get("en_us"));
+        String text = dict.getOrDefault(key, key);
+        try { return Component.literal(String.format(text, args)); } 
+        catch (Exception e) { return Component.literal(text); }
     }
 
-    // --- ENREGISTREMENT COMMANDE ---
+    // --- COMMANDES ---
     @SubscribeEvent
     public static void registerCommand(RegisterCommandsEvent event) {
+        // On charge la configuration au moment où les commandes sont enregistrées (démarrage serveur)
+        loadConfig();
+
         event.getDispatcher().register(Commands.literal("spawnblocker")
             .requires(s -> s.hasPermission(4))
             
-            // --- ADD ---
+            // ADD
             .then(Commands.literal("add")
                 .then(Commands.argument("mob_id", ResourceLocationArgument.id())
                     .suggests((context, builder) -> SharedSuggestionProvider.suggestResource(BuiltInRegistries.ENTITY_TYPE.keySet(), builder))
@@ -88,6 +115,7 @@ public class SpawnBlockerCommand {
                             context.getSource().sendFailure(getMsg(context.getSource(), "error.exists", mobString));
                         } else {
                             BANNED_MOBS.add(mobString);
+                            saveConfig(); // <-- ON SAUVEGARDE ICI
                             context.getSource().sendSuccess(() -> getMsg(context.getSource(), "add.success", mobString), false);
                         }
                         return 1;
@@ -95,7 +123,7 @@ public class SpawnBlockerCommand {
                 )
             )
             
-            // --- REMOVE ---
+            // REMOVE
             .then(Commands.literal("remove")
                 .then(Commands.argument("mob_id", ResourceLocationArgument.id())
                     .suggests((context, builder) -> SharedSuggestionProvider.suggestResource(BuiltInRegistries.ENTITY_TYPE.keySet(), builder))
@@ -105,6 +133,7 @@ public class SpawnBlockerCommand {
 
                         if (BANNED_MOBS.contains(mobString)) {
                             BANNED_MOBS.remove(mobString);
+                            saveConfig(); // <-- ON SAUVEGARDE ICI
                             context.getSource().sendSuccess(() -> getMsg(context.getSource(), "remove.success", mobString), false);
                         } else {
                             context.getSource().sendFailure(getMsg(context.getSource(), "error.not_found", mobString));
@@ -114,7 +143,7 @@ public class SpawnBlockerCommand {
                 )
             )
             
-            // --- LIST ---
+            // LIST
             .then(Commands.literal("list")
                 .executes(context -> {
                     if (BANNED_MOBS.isEmpty()) {
@@ -129,10 +158,10 @@ public class SpawnBlockerCommand {
         );
     }
 
+    // --- EVENT (BLOCAGE) ---
     @SubscribeEvent
     public static void onEntityJoinWorld(EntityJoinLevelEvent event) {
         if (event.getLevel().isClientSide()) return;
-
         String entityId = BuiltInRegistries.ENTITY_TYPE.getKey(event.getEntity().getType()).toString();
 
         if (BANNED_MOBS.contains(entityId)) {
