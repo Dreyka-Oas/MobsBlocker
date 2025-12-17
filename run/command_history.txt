@@ -1,0 +1,8 @@
+/spawnblocker add minecraft:zombie
+/spawnblocker list
+/summon minecraft:zombie
+/spawnblocker add minecraft:slime
+/spawnblocker
+/spawnblocker list
+/gamerule doMobSpawning true
+/spawnblocker list
