@@ -1,0 +1,53 @@
+{
+  "mod_elements": [
+    {
+      "name": "Spawnblocker",
+      "type": "command",
+      "compiles": true,
+      "locked_code": true,
+      "registry_name": "spawnblocker",
+      "metadata": {
+        "files": [
+          "src/main/java/oas/work/mobs_blocker/command/SpawnblockerCommand.java"
+        ]
+      }
+    }
+  ],
+  "variable_elements": [],
+  "sound_elements": [],
+  "tag_elements": {},
+  "tab_element_order": {},
+  "language_map": {
+    "en_us": {}
+  },
+  "metadata": {
+    "files": [
+      "src/main/resources/META-INF/neoforge.mods.toml",
+      "src/main/java/oas/work/mobs_blocker/MobsBlockerMod.java",
+      "src/main/resources/pack.mcmeta"
+    ]
+  },
+  "foldersRoot": {
+    "name": "~",
+    "children": []
+  },
+  "workspaceSettings": {
+    "modid": "mobs_blocker",
+    "modName": "Mobs Blocker",
+    "version": "1.0.0",
+    "description": "A simple tool to block any mob from spawning on your server. ",
+    "author": "Dreyka Oas",
+    "websiteURL": "https://modrinth.com/mod/mobsblocker",
+    "license": "MIT License",
+    "serverSideOnly": false,
+    "modPicture": "logo",
+    "requiredMods": [],
+    "dependencies": [],
+    "dependants": [],
+    "mcreatorDependencies": [],
+    "currentGenerator": "neoforge-1.21.4",
+    "credits": "Made with MCreaHub Optimized for high-performance servers.",
+    "modElementsPackage": "oas.work.mobs_blocker"
+  },
+  "mcreatorVersion": 202500345720
+}
