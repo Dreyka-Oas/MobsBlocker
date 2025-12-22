@@ -6,3 +6,8 @@
 /spawnblocker list
 /gamerule doMobSpawning true
 /spawnblocker list
+/spawnblocker add minecraft:zombie
+/spawnblocker add minecraft:zombie all
+/summon minecraft:zombie
+/spawnblocker add minecraft:zombie !egg
+/summon minecraft:zombie
