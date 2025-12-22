@@ -18,22 +18,7 @@
   "tag_elements": {},
   "tab_element_order": {},
   "language_map": {
-    "en_us": {
-      "cmd.spawnblocker.add.success": "§aSuccessfully added §e%s§a to the block list.",
-      "cmd.spawnblocker.remove.success": "§aSuccessfully removed §e%s§a from the block list.",
-      "cmd.spawnblocker.error.exists": "§cThis mob is already blocked: §e%s",
-      "cmd.spawnblocker.error.not_found": "§cThis mob is not in the block list: §e%s",
-      "cmd.spawnblocker.list.header": "§6Blocked Mobs: §f%s",
-      "cmd.spawnblocker.list.empty": "§6The block list is currently empty."
-    },
-    "fr_fr": {
-      "cmd.spawnblocker.add.success": "§aAjouté avec succès : §e%s§a à la liste de blocage.",
-      "cmd.spawnblocker.remove.success": "§aRetiré avec succès : §e%s§a de la liste de blocage.",
-      "cmd.spawnblocker.error.exists": "§cCe mob est déjà bloqué : §e%s",
-      "cmd.spawnblocker.error.not_found": "§cCe mob n\u0027est pas dans la liste : §e%s",
-      "cmd.spawnblocker.list.header": "§6Mobs Bloqués : §f%s",
-      "cmd.spawnblocker.list.empty": "§6La liste de blocage est vide."
-    }
+    "en_us": {}
   },
   "metadata": {
     "files": [
@@ -49,7 +34,7 @@
   "workspaceSettings": {
     "modid": "mobs_blocker",
     "modName": "Mobs Blocker",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "description": "A simple tool to block any mob from spawning on your server. ",
     "author": "Dreyka Oas",
     "websiteURL": "https://modrinth.com/mod/mobsblocker",

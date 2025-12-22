@@ -1,9 +1,50 @@
-/spawnblocker add minecraft:zombie
-/spawnblocker list
-/summon minecraft:zombie
-/spawnblocker add minecraft:slime
-/spawnblocker
 /spawnblocker list
 /gamerule doMobSpawning true
 /spawnblocker list
 /spawnblocker add minecraft:zombie
+/spawnblocker preset monsters all
+/spawnblocker add minecraft:zombie !egg
+/summon minecraft:zombie
+//spawnblocker add minecraft:zombie egg spawner command
+/spawnblocker add minecraft:zombie egg spawner command
+/summon minecraft:zombie
+/time set midnight
+/time set day
+/spawnblocker list
+/spawnblocker remove global
+/spawnblocker list
+/spawnblocker add minecraft:zombie !egg
+/spawnblocker list
+/spawnblocker add minecraft:zombie !egg
+/spawnblocker reload
+/spawnblocker list
+/spawnblocker reload
+/spawnblocker list
+/spawnblocker reload
+/spawnblocker list
+/spawnblocker add minecraft:zombie !egg
+/spawnblocker reload
+/spawnblocker list
+/summon minecraft:zombie
+/spawnblocker add minecraft:zombie !egg
+/summon minecraft:zombie
+/spawnblocker add minecraft:creeper natural
+/time set midnight
+/summon minecraft:creeper
+/spawnblocker preset creatures all
+/time set day
+/spawnblocker global all
+/spawnblocker list
+/spawnblocker preset monsters !command
+/spawnblocker list
+/spawnblocker add minecraft:skeleton !egg
+/summon sheep
+/spawnblocker add minecraft:skeleton !egg
+/summon minecraft:sheep
+/summon minecraft:zombie
+/spawnblocker reset
+/spawnblocker global all
+/spawnblocker preset monsters !command
+/spawnblocker add minecraft:skeleton !egg
+/summon minecraft:sheep
+/summon minecraft:zombie

@@ -1,3 +1,11 @@
-[
-  "minecraft:zombie"
-]
+{
+  "global_settings": [
+    "all"
+  ],
+  "minecraft:skeleton": [
+    "!egg"
+  ],
+  "preset:monsters": [
+    "!command"
+  ]
+}
