@@ -3,11 +3,16 @@ package oas.work.mobs_blocker.command;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+// Forge 1.19.4 Imports
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -17,153 +22,338 @@ import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.Mob;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber
-public class SpawnblockerCommand {
+public class SpawnblockerCommand { // Ensure filename is SpawnblockerCommand.java
 
+    // --- CONFIGURATION ---
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Path CONFIG_PATH = FMLPaths.CONFIGDIR.get().resolve("spawnblocker.json");
-    public static final Set<String> BANNED_MOBS = new HashSet<>();
-    private static boolean isInitialized = false;
+    public static final Map<String, Set<String>> BANNED_MOBS = new HashMap<>();
+    
+    // Constants
+    private static final String GLOBAL_KEY = "global_settings";
+    private static final String PRESET_PREFIX = "preset:";
 
-    // --- SYSTÈME DE TRADUCTION SERVEUR ---
-    private static final Map<String, Map<String, String>> LANG_MAP = new HashMap<>();
-
+    // Rules
+    private static final List<String> ALL_RULES = Arrays.asList(
+        "all", 
+        "spawner", "!spawner", 
+        "egg", "!egg", 
+        "command", "!command",
+        "natural", "!natural"
+    );
+    
+    // Presets Mapping
+    private static final Map<String, List<MobCategory>> PRESETS = new HashMap<>();
     static {
-        Map<String, String> en = new HashMap<>();
-        en.put("add.success", "§aSuccessfully added §e%s§a to the block list.");
-        en.put("remove.success", "§aSuccessfully removed §e%s§a from the block list.");
-        en.put("error.exists", "§cError: The mob §e%s§c is already blocked.");
-        en.put("error.not_found", "§cError: The mob §e%s§c is not in the list.");
-        en.put("list.header", "§6Blocked Mobs: §f%s");
-        en.put("list.empty", "§6The blocked mobs list is empty.");
-        LANG_MAP.put("en_us", en);
-
-        Map<String, String> fr = new HashMap<>();
-        fr.put("add.success", "§aAjouté : §e%s§a à la liste de blocage.");
-        fr.put("remove.success", "§aRetiré : §e%s§a de la liste de blocage.");
-        fr.put("error.exists", "§cErreur : Le mob §e%s§c est déjà bloqué.");
-        fr.put("error.not_found", "§cErreur : Le mob §e%s§c n'est pas dans la liste.");
-        fr.put("list.header", "§6Mobs Bloqués : §f%s");
-        fr.put("list.empty", "§6La liste de blocage est vide.");
-        LANG_MAP.put("fr_fr", fr);
+        PRESETS.put("monsters", Collections.singletonList(MobCategory.MONSTER));
+        PRESETS.put("creatures", Collections.singletonList(MobCategory.CREATURE));
+        PRESETS.put("ambient", Collections.singletonList(MobCategory.AMBIENT));
+        PRESETS.put("water", Arrays.asList(MobCategory.WATER_CREATURE, MobCategory.UNDERGROUND_WATER_CREATURE));
+        PRESETS.put("misc", Collections.singletonList(MobCategory.MISC));
     }
 
-    private static String getPlayerLanguage(ServerPlayer player) {
-        try {
-            Field field = ServerPlayer.class.getDeclaredField("language");
-            field.setAccessible(true);
-            return (String) field.get(player);
-        } catch (Exception e) {
-            return "en_us";
+    // --- LOAD LOGIC ---
+    private static void loadConfig() {
+        if (!Files.exists(CONFIG_PATH)) {
+            BANNED_MOBS.clear();
+            return;
+        }
+        try (Reader reader = Files.newBufferedReader(CONFIG_PATH)) {
+            Map<String, Set<String>> loaded = GSON.fromJson(reader, new TypeToken<HashMap<String, HashSet<String>>>(){}.getType());
+            if (loaded != null) { 
+                BANNED_MOBS.clear(); 
+                BANNED_MOBS.putAll(loaded); 
+            }
+        } catch (Exception e) { 
+            System.err.println("[SpawnBlocker] Error loading config: " + e.getMessage());
         }
     }
 
-    private static Component getMsg(CommandSourceStack source, String key, Object... args) {
-        String lang = "en_us";
-        if (source.getEntity() instanceof ServerPlayer player) {
-            lang = getPlayerLanguage(player).toLowerCase();
-        }
-        Map<String, String> dict = LANG_MAP.getOrDefault(lang, LANG_MAP.get("en_us"));
-        String text = dict.getOrDefault(key, key);
-        try { return Component.literal(String.format(text, args)); } 
-        catch (Exception e) { return Component.literal(text); }
+    // --- SAVE LOGIC ---
+    private static void saveConfig() {
+        try (Writer writer = Files.newBufferedWriter(CONFIG_PATH)) {
+            GSON.toJson(BANNED_MOBS, writer);
+        } catch (IOException e) { e.printStackTrace(); }
     }
 
+    // --- SMART SUGGESTIONS ---
+    private static CompletableFuture<Suggestions> getRuleSuggestions(SuggestionsBuilder builder) {
+        String input = builder.getRemaining().toLowerCase();
+        String[] parts = input.split(" ");
+        List<String> currentRules = Arrays.asList(parts);
+        String lastPart = input.endsWith(" ") ? "" : parts[parts.length - 1];
+        boolean hasInverse = currentRules.stream().anyMatch(r -> r.startsWith("!"));
+
+        List<String> suggestions = ALL_RULES.stream().filter(rule -> {
+            if (currentRules.contains("all") || currentRules.contains(rule)) return false;
+            if (rule.equals("all") && !currentRules.isEmpty() && !input.equals(lastPart)) return false;
+            if (hasInverse && !currentRules.contains(rule)) return false; 
+            if (!hasInverse && !currentRules.isEmpty() && rule.startsWith("!")) return false;
+            return rule.startsWith(lastPart);
+        }).collect(Collectors.toList());
+
+        String prefix = input.substring(0, input.length() - lastPart.length());
+        for (String s : suggestions) { builder.suggest(prefix + s); }
+        return builder.buildFuture();
+    }
+
+    // --- COMMAND REGISTRATION ---
     @SubscribeEvent
     public static void registerCommand(RegisterCommandsEvent event) {
-        if (!isInitialized) {
-            loadConfig();
-            isInitialized = true;
-        }
-
+        loadConfig();
         event.getDispatcher().register(Commands.literal("spawnblocker")
             .requires(s -> s.hasPermission(4))
             
+            // 1. ADD (Specific)
             .then(Commands.literal("add")
                 .then(Commands.argument("mob_id", ResourceLocationArgument.id())
-                    .suggests((context, builder) -> SharedSuggestionProvider.suggestResource(ForgeRegistries.ENTITY_TYPES.getKeys(), builder))
-                    .executes(context -> {
-                        String mobString = ResourceLocationArgument.getId(context, "mob_id").toString();
-                        if (BANNED_MOBS.contains(mobString)) {
-                            context.getSource().sendFailure(getMsg(context.getSource(), "error.exists", mobString));
-                        } else {
-                            BANNED_MOBS.add(mobString);
-                            saveConfig();
-                            // CORRECTION : Pas de lambda () -> en 1.19.4
-                            context.getSource().sendSuccess(getMsg(context.getSource(), "add.success", mobString), false);
-                        }
-                        return 1;
-                    })
+                    .suggests((c, b) -> SharedSuggestionProvider.suggestResource(ForgeRegistries.ENTITY_TYPES.getKeys(), b))
+                    .then(Commands.argument("rules", StringArgumentType.greedyString())
+                        .suggests((c, b) -> getRuleSuggestions(b))
+                        .executes(c -> updateRules(c.getSource(), ResourceLocationArgument.getId(c, "mob_id").toString(), StringArgumentType.getString(c, "rules").split(" ")))
+                    )
                 )
             )
             
+            // 2. PRESET
+            .then(Commands.literal("preset")
+                .then(Commands.argument("category", StringArgumentType.word())
+                    .suggests((c, b) -> SharedSuggestionProvider.suggest(PRESETS.keySet(), b))
+                    .then(Commands.argument("rules", StringArgumentType.greedyString())
+                        .suggests((c, b) -> getRuleSuggestions(b))
+                        .executes(c -> {
+                            String cat = StringArgumentType.getString(c, "category");
+                            if (!PRESETS.containsKey(cat)) return 0;
+                            return updateRules(c.getSource(), PRESET_PREFIX + cat, StringArgumentType.getString(c, "rules").split(" "));
+                        })
+                    )
+                )
+            )
+            
+            // 3. GLOBAL
+            .then(Commands.literal("global")
+                .then(Commands.argument("rules", StringArgumentType.greedyString())
+                    .suggests((c, b) -> getRuleSuggestions(b))
+                    .executes(c -> updateRules(c.getSource(), GLOBAL_KEY, StringArgumentType.getString(c, "rules").split(" ")))
+                )
+            )
+
+            // 4. RELOAD
+            .then(Commands.literal("reload")
+                .executes(c -> {
+                    loadConfig();
+                    // 1.19.4: No lambda here
+                    c.getSource().sendSuccess(Component.literal("§aConfiguration reloaded from disk!"), true);
+                    return 1;
+                })
+            )
+
+            // 5. RESET
+            .then(Commands.literal("reset")
+                .executes(c -> {
+                    BANNED_MOBS.clear();
+                    saveConfig();
+                    // 1.19.4: No lambda here
+                    c.getSource().sendSuccess(Component.literal("§c⚠ COMPLETE configuration reset (File cleared)!"), true);
+                    return 1;
+                })
+            )
+            
+            // 6. REMOVE
             .then(Commands.literal("remove")
                 .then(Commands.argument("mob_id", ResourceLocationArgument.id())
-                    .suggests((context, builder) -> SharedSuggestionProvider.suggestResource(BANNED_MOBS.stream().map(ResourceLocation::new), builder))
-                    .executes(context -> {
-                        String mobString = ResourceLocationArgument.getId(context, "mob_id").toString();
-                        if (BANNED_MOBS.contains(mobString)) {
-                            BANNED_MOBS.remove(mobString);
-                            saveConfig();
-                            // CORRECTION : Pas de lambda () -> en 1.19.4
-                            context.getSource().sendSuccess(getMsg(context.getSource(), "remove.success", mobString), false);
-                        } else {
-                            context.getSource().sendFailure(getMsg(context.getSource(), "error.not_found", mobString));
-                        }
-                        return 1;
-                    })
+                    .suggests((c, b) -> SharedSuggestionProvider.suggest(BANNED_MOBS.keySet().stream().filter(k -> !k.startsWith(PRESET_PREFIX) && !k.equals(GLOBAL_KEY)).collect(Collectors.toSet()), b))
+                    .executes(c -> removeEntry(c.getSource(), ResourceLocationArgument.getId(c, "mob_id").toString()))
+                )
+                .then(Commands.literal("preset")
+                    .then(Commands.argument("category", StringArgumentType.word())
+                        .suggests((c, b) -> SharedSuggestionProvider.suggest(PRESETS.keySet(), b))
+                        .executes(c -> removeEntry(c.getSource(), PRESET_PREFIX + StringArgumentType.getString(c, "category")))
+                    )
+                )
+                .then(Commands.literal("global")
+                    .executes(c -> removeEntry(c.getSource(), GLOBAL_KEY))
                 )
             )
             
+            // 7. LIST
             .then(Commands.literal("list")
-                .executes(context -> {
-                    if (BANNED_MOBS.isEmpty()) {
-                        // CORRECTION : Pas de lambda () -> en 1.19.4
-                        context.getSource().sendSuccess(getMsg(context.getSource(), "list.empty"), false);
-                    } else {
-                        String list = String.join(", ", BANNED_MOBS);
-                        // CORRECTION : Pas de lambda () -> en 1.19.4
-                        context.getSource().sendSuccess(getMsg(context.getSource(), "list.header", list), false);
+                .executes(c -> {
+                    if (BANNED_MOBS.isEmpty()) { 
+                        // 1.19.4: No lambda here
+                        c.getSource().sendSuccess(Component.literal("§6No active rules."), false); 
+                        return 1;
                     }
+                    c.getSource().sendSuccess(Component.literal("§6Active Blocking Rules:"), false);
+                    
+                    if(BANNED_MOBS.containsKey(GLOBAL_KEY)) {
+                        c.getSource().sendSuccess(Component.literal("§d★ GLOBAL §7: §b" + BANNED_MOBS.get(GLOBAL_KEY)), false);
+                    }
+                    
+                    BANNED_MOBS.forEach((key, rules) -> {
+                        if(key.startsWith(PRESET_PREFIX)) {
+                            c.getSource().sendSuccess(Component.literal("§e★ PRESET " + key.replace(PRESET_PREFIX, "").toUpperCase() + " §7: §b" + rules), false);
+                        }
+                    });
+
+                    BANNED_MOBS.forEach((key, rules) -> {
+                        if(!key.startsWith(PRESET_PREFIX) && !key.equals(GLOBAL_KEY))
+                            c.getSource().sendSuccess(Component.literal("§7- §f" + key + " §b" + rules), false);
+                    });
                     return 1;
                 })
             )
         );
     }
 
+    // --- UPDATE LOGIC ---
+    private static int updateRules(CommandSourceStack source, String targetId, String[] rulesArray) {
+        Set<String> rulesSet = BANNED_MOBS.computeIfAbsent(targetId, k -> new HashSet<>());
+        
+        boolean newHasInverse = Arrays.stream(rulesArray).anyMatch(r -> r.startsWith("!"));
+        if (newHasInverse && (rulesArray.length > 1 || !rulesSet.isEmpty())) {
+            rulesSet.clear();
+        }
+
+        for (String rule : rulesArray) {
+            if (!ALL_RULES.contains(rule)) continue;
+            if (rule.equals("all") || rule.startsWith("!")) { 
+                rulesSet.clear(); rulesSet.add(rule); break; 
+            } else { 
+                rulesSet.removeIf(r -> r.startsWith("!") || r.equals("all"));
+                rulesSet.add(rule); 
+            }
+        }
+        saveConfig();
+        String displayName = targetId.equals(GLOBAL_KEY) ? "§dGLOBAL" : targetId.startsWith(PRESET_PREFIX) ? "§ePRESET " + targetId.replace(PRESET_PREFIX, "") : "§f" + targetId;
+        // 1.19.4: No lambda here
+        source.sendSuccess(Component.literal("§aRules updated for " + displayName + "§a: §b" + rulesSet), false);
+        return 1;
+    }
+
+    private static int removeEntry(CommandSourceStack source, String key) {
+        if (BANNED_MOBS.remove(key) != null) {
+            saveConfig();
+            // 1.19.4: No lambda here
+            source.sendSuccess(Component.literal("§aRemoved rules for: §e" + key.replace(PRESET_PREFIX, "")), false);
+        } else {
+            source.sendFailure(Component.literal("§cNothing found to remove for: " + key));
+        }
+        return 1;
+    }
+
+    // --- BLOCKING LOGIC (Forge 1.19.4) ---
+    @SubscribeEvent
+    public static void onFinalizeSpawn(MobSpawnEvent.FinalizeSpawn event) {
+        if (event.getLevel().isClientSide()) return;
+        if (!(event.getEntity() instanceof Mob)) return; 
+        
+        // ForgeRegistries for 1.19.4
+        ResourceLocation rl = ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType());
+        if (rl == null) return;
+        String id = rl.toString();
+        
+        MobCategory category = event.getEntity().getType().getCategory();
+
+        // 1. Specific
+        Set<String> rules = BANNED_MOBS.get(id); 
+        
+        // 2. Preset
+        if (rules == null) {
+            for (Map.Entry<String, List<MobCategory>> entry : PRESETS.entrySet()) {
+                if (entry.getValue().contains(category)) {
+                    rules = BANNED_MOBS.get(PRESET_PREFIX + entry.getKey());
+                    if (rules != null) break;
+                }
+            }
+        }
+        
+        // 3. Global
+        if (rules == null) {
+            rules = BANNED_MOBS.get(GLOBAL_KEY);
+        }
+
+        if (rules == null || rules.isEmpty()) return;
+
+        MobSpawnType reason = event.getSpawnType();
+        String name = reason.name();
+
+        boolean isSpawner = (reason == MobSpawnType.SPAWNER);
+        boolean isCommand = (reason == MobSpawnType.COMMAND);
+        boolean isEgg = (reason == MobSpawnType.DISPENSER || reason == MobSpawnType.SPAWN_EGG || name.contains("EGG"));
+        boolean isNatural = (!isSpawner && !isCommand && !isEgg);
+
+        if (rules.contains("all")) { cancelSpawn(event); return; }
+
+        for (String rule : rules) {
+            if (rule.startsWith("!")) {
+                boolean allowed = false;
+                if (rule.equals("!spawner") && isSpawner) allowed = true;
+                if (rule.equals("!egg") && isEgg) allowed = true;
+                if (rule.equals("!command") && isCommand) allowed = true;
+                if (rule.equals("!natural") && isNatural) allowed = true;
+                if (!allowed) cancelSpawn(event);
+                return;
+            }
+        }
+
+        boolean shouldBlock = false;
+        for (String rule : rules) {
+            if (rule.equals("spawner") && isSpawner) shouldBlock = true;
+            if (rule.equals("egg") && isEgg) shouldBlock = true;
+            if (rule.equals("command") && isCommand) shouldBlock = true;
+            if (rule.equals("natural") && isNatural) shouldBlock = true;
+        }
+
+        if (shouldBlock) cancelSpawn(event);
+    }
+    
+    private static void cancelSpawn(MobSpawnEvent.FinalizeSpawn event) {
+        event.setCanceled(true);
+        event.setSpawnCancelled(true);
+        event.getEntity().discard();
+    }
+
+    // Failsafe for "all"
     @SubscribeEvent
     public static void onEntityJoin(EntityJoinLevelEvent event) {
         if (event.getLevel().isClientSide()) return;
-        ResourceLocation id = ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType());
-        if (id != null && BANNED_MOBS.contains(id.toString())) {
-            event.setCanceled(true);
-        }
-    }
+        if (!(event.getEntity() instanceof Mob)) return;
 
-    private static void loadConfig() {
-        if (!Files.exists(CONFIG_PATH)) return;
-        try (Reader reader = Files.newBufferedReader(CONFIG_PATH)) {
-            Set<String> loaded = GSON.fromJson(reader, new TypeToken<HashSet<String>>(){}.getType());
-            if (loaded != null) {
-                BANNED_MOBS.clear();
-                BANNED_MOBS.addAll(loaded);
+        ResourceLocation rl = ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType());
+        if (rl == null) return;
+        String id = rl.toString();
+        
+        MobCategory category = event.getEntity().getType().getCategory();
+
+        Set<String> rules = BANNED_MOBS.get(id);
+        if (rules == null) {
+             for (Map.Entry<String, List<MobCategory>> entry : PRESETS.entrySet()) {
+                if (entry.getValue().contains(category)) {
+                    rules = BANNED_MOBS.get(PRESET_PREFIX + entry.getKey());
+                    if (rules != null) break;
+                }
             }
-        } catch (IOException e) { e.printStackTrace(); }
-    }
+        }
+        if (rules == null) rules = BANNED_MOBS.get(GLOBAL_KEY);
 
-    private static void saveConfig() {
-        try (Writer writer = Files.newBufferedWriter(CONFIG_PATH)) {
-            GSON.toJson(BANNED_MOBS, writer);
-        } catch (IOException e) { e.printStackTrace(); }
+        if (rules != null && rules.contains("all")) {
+            event.setCanceled(true);
+            event.getEntity().discard();
+        }
     }
 }
